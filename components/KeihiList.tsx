@@ -15,29 +15,31 @@ const DATA = [
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Rent',
     cost: "67,000",
+    paid: true,
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
     title: 'Car lease',
     cost: "130,000",
+    paid: false,
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
     title: 'Groceries',
     cost: "6,000",
+    paid: true,
   },
 ];
 
 type Item = {
   id: string;
   title: string;
+  cost: string,
+  paid: boolean,
 };
 
 type ItemProps = {
-  item: {
-    title: string,
-    cost?: string,
-  };
+  item: Item;
   onPress: () => void;
   backgroundColor: string;
   textColor: string;
@@ -48,18 +50,18 @@ type ItemProps = {
 
 const Item = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
-    <View style={{ backgroundColor }}>
-      <Text style={[styles.title, {color: textColor}]}>
+    <>
+      <Text style={[styles.title, { color: textColor }]}>
         {item.title}
       </Text>
 
       <Text style={[styles.title, { color: textColor }]}>
         {item.cost}
       </Text>
-    </View>
+    </>
 
     <Text style={{ color: textColor, marginLeft: 'auto' }}>
-      Paid
+      {item.paid ? "Paid" : "Unpaid"}
     </Text>
   </TouchableOpacity>
 );
@@ -69,7 +71,7 @@ export const KeihiList = () => {
 
   const renderItem: ListRenderItem<Item> = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#343541' : '#272A36';
-    const color = item.id === selectedId ? '#fff' : '#828286';
+    const color = !item.paid ? '#fff' : '#828286';
 
     return (
       <Item

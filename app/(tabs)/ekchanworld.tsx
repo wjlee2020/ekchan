@@ -1,32 +1,52 @@
-import { useState } from 'react';
-import { Animated, StyleSheet } from 'react-native';
-import { GestureEvent, PanGestureHandler, PinchGestureHandler, PinchGestureHandlerEventPayload } from 'react-native-gesture-handler';
-import Svg, { Circle, Line } from 'react-native-svg';
-
-
+import { StyleSheet } from "react-native";
+import Animated, {
+  useAnimatedGestureHandler,
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
+import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 import { View } from "../../components/Themed";
 
-export default function EkchanWorld() {
-  const [scale, setScale] = useState(1);
-  const [translateX, setTranslateX] = useState(0);
-  const [translateY, setTranslateY] = useState(0);
+type ContextInterface = {
+  translateX: number;
+  translateY: number;
+}
 
-  const onPanGestureEvent = (event: any) => {
-    console.log(event);
-  };
+export default function EkchanWorld() {
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+
+  const panGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, ContextInterface>({
+    onStart: (event, context) => {
+      context.translateY = translateY.value;
+      context.translateX = translateX.value;
+    },
+    onActive: (event, context) => {
+      translateX.value = event.translationX + context.translateX;
+      translateY.value = event.translationY + context.translateY;
+    },
+    onEnd: (event) => {
+      translateX.value = withSpring(0);
+      translateY.value = withSpring(0);
+    },
+  });
+
+  const rStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+      ],
+    }
+  });
 
   return (
-    <PanGestureHandler onGestureEvent={onPanGestureEvent}>
-      <PinchGestureHandler>
-        <Animated.View style={{ transform: [{ scale: scale }] }}>
-          <Svg>
-            <Circle cx="50" cy="50" r="25" fill="green" />
-            <Circle cx="100" cy="100" r="25" fill="red" />
-            <Line x1="50" y1="50" x2="100" y2="100" stroke="black" />
-          </Svg>
-        </Animated.View>
-      </PinchGestureHandler>
+   <View style={styles.container}>
+    <PanGestureHandler onGestureEvent={panGestureEvent}>
+      <Animated.View style={[styles.square, rStyle]} />
     </PanGestureHandler>
+   </View>
   );
 }
 
@@ -34,6 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
@@ -43,5 +64,15 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  square: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    borderColor: 'blue',
+    borderWidth: 2,
+    borderRadius: 8,
   },
 });
