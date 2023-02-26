@@ -51,6 +51,28 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="ekchanworld"
+        options={{
+          title: 'Ekchan World',
+          tabBarIcon: ({ color }) => <TabBarIcon name="globe" color={color} />,
+          headerRight: () => (
+            <Link href="/ekchanworld" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="plus-circle"
+                    size={25}
+                    color={Colors[colorScheme ?? 'light'].text}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
     </Tabs>
   );
 }
