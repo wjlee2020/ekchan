@@ -10,14 +10,14 @@ export default function AddKehi() {
         style={styles.costBox}
         placeholder="Rent"
         placeholderTextColor="gray"
-        label='Item'
+        label='Item title'
       />
       <TextInput
         style={styles.costBox}
         placeholder="50,000"
         placeholderTextColor="gray"
         keyboardType="numeric"
-        label='Cost'
+        label='Item cost'
       />
 
     <Pressable style={styles.button} onPress={() => console.log("hello")}>

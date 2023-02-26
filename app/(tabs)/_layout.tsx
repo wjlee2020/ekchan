@@ -26,7 +26,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
 
@@ -34,7 +34,7 @@ export default function TabLayout() {
         name="keihi"
         options={{
           title: 'Keihi',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
           headerRight: () => (
             <Link href="/tsuika" asChild>
               <Pressable>

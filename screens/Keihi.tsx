@@ -1,33 +1,27 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { KeihiList } from '../components/KeihiList';
 
 import { Text, View } from '../components/Themed';
 
 export default function Keihi() {
   return (
-    <View>
-      <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Open up the code for this screen:
-        </Text>
+    <View style={styles.getStartedContainer}>
+      <Text
+        style={styles.getStartedText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)"
+      >
+        {new Date().toISOString().split("T")[0]}
+      </Text>
 
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Change any of the text, save the file, and your app will automatically update.
-        </Text>
-      </View>
+      <KeihiList />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   getStartedContainer: {
-    alignItems: 'center',
     marginHorizontal: 50,
   },
   getStartedText: {
