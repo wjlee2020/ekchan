@@ -1,26 +1,30 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Text, View } from './Themed';
+import { Pressable, Text, TextInput, View } from './Themed';
 
 export default function AddKehi() {
   return (
-    <View>
-      <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Open up the code for this screen:
-        </Text>
+    <View style={{ width: '80%' }}>
+      <TextInput
+        style={styles.costBox}
+        placeholder="Rent"
+        placeholderTextColor="gray"
+        label='Item'
+      />
+      <TextInput
+        style={styles.costBox}
+        placeholder="50,000"
+        placeholderTextColor="gray"
+        keyboardType="numeric"
+        label='Cost'
+      />
 
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Change any of the text, save the file, and your app will automatically update.
-        </Text>
-      </View>
+    <Pressable style={styles.button} onPress={() => console.log("hello")}>
+      <Text style={styles.text}>
+        Add
+      </Text>
+    </Pressable>
     </View>
   );
 }
@@ -29,28 +33,37 @@ const styles = StyleSheet.create({
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
+    marginBottom: 10
   },
   getStartedText: {
-    fontSize: 17,
+    fontSize: 24,
     lineHeight: 24,
     textAlign: 'center',
   },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
+  costBox: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 10,
+  },
+  button: {
+    width: "90%",
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'black',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    textAlign: 'center',
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
 });

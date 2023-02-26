@@ -7,7 +7,14 @@ import { Text, View } from '../components/Themed';
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
+      <Text style={styles.title}>経費追加</Text>
+
+      <Text
+        style={styles.getStartedText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">
+        いくら使いましたか？
+      </Text>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
@@ -23,15 +30,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 40,
+    gap: 10
+  },
+  getStartedText: {
+    fontSize: 24,
+    lineHeight: 24,
+    textAlign: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   separator: {
     marginVertical: 30,
     height: 1,
+    backgroundColor: "blue",
     width: '80%',
   },
 });
