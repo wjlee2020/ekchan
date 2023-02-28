@@ -6,7 +6,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
-import { View } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
 
 type ContextInterface = {
   translateX: number;
@@ -44,7 +44,8 @@ export default function EkchanWorld() {
   return (
    <View style={styles.container}>
     <PanGestureHandler onGestureEvent={panGestureEvent}>
-      <Animated.View style={[styles.square, rStyle]} />
+      <Animated.View style={[styles.square, rStyle]}>
+      </Animated.View>
     </PanGestureHandler>
    </View>
   );
