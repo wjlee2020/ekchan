@@ -16,7 +16,7 @@ export default function ModalScreen() {
         いくら使いましたか？
       </Text>
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.separator} darkColor="#1C1C1C" />
 
       <AddKehi />
 
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   separator: {
     marginVertical: 30,
     height: 1,
-    backgroundColor: "blue",
+    backgroundColor: "#1C1C1C",
     width: '80%',
   },
 });

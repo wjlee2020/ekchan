@@ -73,6 +73,28 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="camera"
+        options={{
+          title: 'Camera',
+          tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
+          headerRight: () => (
+            <Link href="/camera" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="photo"
+                    size={25}
+                    color={Colors[colorScheme ?? 'light'].text}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
     </Tabs>
   );
 }
