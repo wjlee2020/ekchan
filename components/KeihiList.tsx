@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ListRenderItem,
 } from 'react-native';
-import { View } from './Themed';
+import { Item, ItemProps } from '../app/models/Keihi';
 
 const DATA = [
   {
@@ -31,24 +31,7 @@ const DATA = [
   },
 ];
 
-type Item = {
-  id: string;
-  title: string;
-  cost: string,
-  paid: boolean,
-};
-
-type ItemProps = {
-  item: Item;
-  onPress: () => void;
-  backgroundColor: string;
-  textColor: string;
-  styles?: {
-    title: string,
-  };
-}
-
-const Item = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
+const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
     <>
       <Text style={[styles.title, { color: textColor }]}>
@@ -74,7 +57,7 @@ export const KeihiList = () => {
     const color = !item.paid ? '#fff' : '#828286';
 
     return (
-      <Item
+      <KeihiItem
         item={item}
         onPress={() => setSelectedId(selectedId === item.id ? undefined : item.id)}
         backgroundColor={backgroundColor}

@@ -1,9 +1,20 @@
-import React from 'react';
+import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-
+import { Item, ItemProps } from '../app/models/Keihi';
 import { Pressable, Text, TextInput, View } from './Themed';
 
 export default function AddKehi() {
+  const [newKeihi, setNewKeihi] = useState<Item>({
+    id: "",
+    title: "",
+    cost: "",
+    paid: false,
+  });
+
+  const handleAddKeihi = () => {
+    setNewKeihi((prev) => ({ ...prev, id: "" }))
+  };
+
   return (
     <View style={{ width: '80%' }}>
       <TextInput
@@ -11,16 +22,19 @@ export default function AddKehi() {
         placeholder="Rent"
         placeholderTextColor="gray"
         label='Item title'
+        onChangeText={(text) => setNewKeihi((prev) => ({ ...prev, title: text}))}
       />
+
       <TextInput
         style={styles.costBox}
         placeholder="50,000"
         placeholderTextColor="gray"
         keyboardType="numeric"
         label='Item cost'
+        onChangeText={(text) => setNewKeihi((prev) => ({ ...prev, cost: text}))}
       />
 
-    <Pressable style={styles.button} onPress={() => console.log("hello")}>
+    <Pressable style={styles.button} onPress={handleAddKeihi}>
       <Text style={styles.text}>
         Add
       </Text>
