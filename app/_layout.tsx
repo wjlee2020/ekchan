@@ -5,6 +5,8 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
+import AuthContextProvider from './context/AuthContext';
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -14,6 +16,23 @@ export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
+
+function RootLayoutNav() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <>
+      <AuthContextProvider value={null}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="tsuika" options={{ presentation: 'modal', title: "Add Keihi" }} />
+          </Stack>
+        </ThemeProvider>
+      </AuthContextProvider>
+    </>
+  );
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -31,21 +50,6 @@ export default function RootLayout() {
       {/* Keep the splash screen open until the assets have loaded. In the future, we should just support async font loading with a native version of font-display. */}
       {!loaded && <SplashScreen />}
       {loaded && <RootLayoutNav />}
-    </>
-  );
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="tsuika" options={{ presentation: 'modal', title: "Add Keihi" }} />
-        </Stack>
-      </ThemeProvider>
     </>
   );
 }

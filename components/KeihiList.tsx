@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Item, ItemProps } from '../app/models/Keihi';
 
-const DATA = [
+const DATA: Item[] = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'Rent',

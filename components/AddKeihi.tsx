@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Item, ItemProps } from '../app/models/Keihi';
+import { Item } from '../app/models/Keihi';
 import { Pressable, Text, TextInput, View } from './Themed';
 
 export default function AddKehi() {
@@ -11,8 +11,10 @@ export default function AddKehi() {
     paid: false,
   });
 
+  // Todo: send newKeihi
+
   const handleAddKeihi = () => {
-    setNewKeihi((prev) => ({ ...prev, id: "" }))
+    // send newKeihi
   };
 
   return (
@@ -33,6 +35,8 @@ export default function AddKehi() {
         label='Item cost'
         onChangeText={(text) => setNewKeihi((prev) => ({ ...prev, cost: text}))}
       />
+
+    {/* Paid switch button */}
 
     <Pressable style={styles.button} onPress={handleAddKeihi}>
       <Text style={styles.text}>
