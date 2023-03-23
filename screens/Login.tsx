@@ -1,9 +1,14 @@
 import { Link } from "expo-router";
 import { StyleSheet, TextInput } from "react-native";
-import { Pressable, Text, View } from "../../components/Themed";
-import { signUp, testEndpoint } from "../api/auth";
+import { Pressable, Text, View } from "../components/Themed";
+import { useAuthValue } from "../app/context/AuthContext";
+import { useState } from "react";
 
-export default function SignUp() {
+export default function Login() {
+  const { setCurrentUser } = useAuthValue();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <View style={{
       height: "100%",
@@ -12,20 +17,13 @@ export default function SignUp() {
       alignItems: 'center',
       }}
     >
-      <Text style={{ fontSize: 36 }}>Ekchan - Sign Up</Text>
+      <Text style={{ fontSize: 36 }}>Ekchan - Login</Text>
 
       <View style={{ marginVertical: 8 }}>
         <TextInput
           style={styles.input}
-          placeholder="Name"
-        />
-
-        <TextInput
-          style={styles.input}
-          autoCapitalize="none"
           placeholder="Email"
         />
-
         <TextInput
           autoCapitalize="none"
           style={styles.input}
@@ -33,14 +31,14 @@ export default function SignUp() {
           secureTextEntry
         />
 
-        <Pressable style={[styles.loginBtn]} onPress={() => testEndpoint()}>
-          <Text style={styles.loginBtnText}>Create Account</Text>
+        <Pressable style={[styles.loginBtn]}>
+          <Text style={styles.loginBtnText}>Login</Text>
         </Pressable>
       </View>
 
       <Pressable style={{ marginTop: 10 }}>
-        <Text>Already have an account?</Text>
-        <Link style={styles.signUpLink} href={"/(auth)/sign-in"}>Sign In</Link>
+        <Text>Don't have an account?</Text>
+        <Link style={styles.signUpLink} href={"/(auth)/sign-up"}>Sign Up</Link>
       </Pressable>
     </View>
   );

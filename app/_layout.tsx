@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
 import AuthContextProvider from './context/AuthContext';
+import { StatusBar } from 'expo-status-bar';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,6 +24,12 @@ function RootLayoutNav() {
   return (
     <AuthContextProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <StatusBar
+          animated={true}
+          backgroundColor="#61dafb"
+          hidden
+        />
+
         <Slot />
       </ThemeProvider>
     </AuthContextProvider>

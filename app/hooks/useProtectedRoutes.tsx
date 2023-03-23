@@ -6,7 +6,7 @@ export default function useProtectedRoutes(user: User) {
   const router = useRouter();
 
   useEffect(() => {
-    const inAuthGroup = segments[0] === "(tabs)";
+    const inAuthGroup = segments[0] === "(auth)";
 
     if (
       // If the user is not signed in and the initial segment is not anything in the auth group.
