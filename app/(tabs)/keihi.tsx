@@ -6,7 +6,7 @@ import Keihi from '../../screens/Keihi';
 export default function KeihiScreen() {
   return (
     <View style={styles.container}>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.separator} />
       <Keihi />
     </View>
   );

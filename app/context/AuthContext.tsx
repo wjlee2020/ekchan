@@ -1,14 +1,37 @@
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+ } from "react";
+import useProtectedRoutes from "../hooks/useProtectedRoutes";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext({
+  currentUser: {
+    id: "",
+    token: "",
+    email: "",
+  },
+  setCurrentUser: (prevState: any) => prevState,
+});
 
-interface AuthContextProps {
+type AuthContextProps = {
   children: React.ReactNode | React.ReactNode[] | null;
-  value: any | null;
+  value?: {
+    currentUser: User
+  } | null;
 }
 
 export default function AuthContextProvider({ children }: AuthContextProps) {
-  return <AuthContext.Provider value={null}>
+  const [currentUser, setCurrentUser] = useState<User>({
+    id: "",
+    token: "",
+    email: "",
+  });
+
+  useProtectedRoutes(currentUser);
+
+  return <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
     {children}
   </AuthContext.Provider>;
 }

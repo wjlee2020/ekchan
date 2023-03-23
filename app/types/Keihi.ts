@@ -1,11 +1,11 @@
-export interface  Item {
-  id: string;
+export type Item = {
+  readonly id: string;
   title: string;
   cost: string,
   paid: boolean,
 };
 
-export interface ItemProps {
+export type ItemProps = {
   item: Item;
   onPress: () => void;
   backgroundColor: string;
