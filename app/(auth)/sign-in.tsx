@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { StyleSheet, TextInput } from "react-native";
+import { Alert, StyleSheet, TextInput } from "react-native";
 import { Pressable, Text, View } from "../../components/Themed";
 import { useAuthValue } from "../../app/context/AuthContext";
 import { useState } from "react";
