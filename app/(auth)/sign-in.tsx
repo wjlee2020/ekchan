@@ -1,12 +1,12 @@
 import { Link } from "expo-router";
-import { Alert, StyleSheet, TextInput } from "react-native";
+import { Alert, Image, StyleSheet, TextInput } from "react-native";
 import { Pressable, Text, View } from "../../components/Themed";
-import { useAuthValue } from "../../app/context/AuthContext";
+import { useAuthValue } from "../../context/AuthContext";
 import { useState } from "react";
-import { login } from "../api/auth";
+import { login } from "../../api/auth";
 
 export default function SignIn() {
-  const { setCurrentUser } = useAuthValue();
+  const { currentUser, setCurrentUser } = useAuthValue();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,7 +29,10 @@ export default function SignIn() {
       alignItems: 'center',
       }}
     >
-      <Text style={{ fontSize: 36 }}>Ekchan - Login</Text>
+      <Image
+        source={require("../../assets/images/eongnimk.gif")}
+        style={{width: 250, height: 250}}
+      />
 
       <View style={{ marginVertical: 8 }}>
         <TextInput
@@ -47,13 +50,20 @@ export default function SignIn() {
           onChangeText={(text) => setPassword(text)}
         />
 
-        <Pressable style={[styles.loginBtn]} onPress={handleLogin}>
+        <Pressable
+          android_ripple={{ color: "green" }}
+          style={({ pressed }) => [
+            styles.loginBtn,
+            pressed ? styles.pressedItem : null
+          ]}
+          onPress={handleLogin}
+        >
           <Text style={styles.loginBtnText}>Login</Text>
         </Pressable>
       </View>
 
       <Pressable style={{ marginTop: 10 }}>
-        <Text>Don't have an account?</Text>
+        <Text style={{ color: "white" }}>Don't have an account?</Text>
         <Link style={styles.signUpLink} href={"/(auth)/sign-up"}>Sign Up</Link>
       </Pressable>
     </View>
@@ -66,10 +76,14 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 12,
     borderWidth: 1,
+    borderColor: "white",
+    backgroundColor: "white",
     borderRadius: 8,
     padding: 10,
+    fontWeight: "bold",
   },
   signUpLink: {
+    color: "white",
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
@@ -90,5 +104,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
+  },
+  pressedItem: {
+    opacity: 0.6
   }
 });

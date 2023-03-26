@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { StyleSheet, TextInput } from "react-native";
 import { Pressable, Text, View } from "../../components/Themed";
-import { signUp, testEndpoint } from "../api/auth";
+import { signUp, testEndpoint } from "../../api/auth";
 
 export default function SignUp() {
   return (

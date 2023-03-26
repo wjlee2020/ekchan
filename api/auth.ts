@@ -2,7 +2,12 @@ import { EKCHAN_SERVER } from "../config";
 
 export async function testEndpoint() {
   try {
-    const res = await fetch(`${EKCHAN_SERVER}/api/users`);
+    const res = await fetch(`${EKCHAN_SERVER}/api/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
     const response = await res.json();
     console.log(response);
   } catch (e) {

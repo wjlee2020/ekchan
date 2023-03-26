@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Item } from '../app/types/Keihi';
+import { Item } from '../types/Keihi';
 import { Pressable, Text, TextInput, View } from './Themed';
 
 export default function AddKehi() {

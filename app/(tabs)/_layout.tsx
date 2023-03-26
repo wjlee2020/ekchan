@@ -22,7 +22,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
@@ -52,7 +52,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="ekchanworld"
         options={{
-          title: 'Ekchan World',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="globe" color={color} />,
           headerRight: () => (
             <Link href="/ekchanworld" asChild>

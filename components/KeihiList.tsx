@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ListRenderItem,
 } from 'react-native';
-import { Item, ItemProps } from '../app/types/Keihi';
+import { Item, ItemProps } from '../types/Keihi';
 
 const DATA: Item[] = [
   {

@@ -5,7 +5,7 @@ import { Slot, SplashScreen } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
-import AuthContextProvider from './context/AuthContext';
+import AuthContextProvider from '../context/AuthContext';
 import { StatusBar } from 'expo-status-bar';
 
 export {
@@ -26,7 +26,6 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <StatusBar
           animated={true}
-          backgroundColor="#61dafb"
           hidden
         />
 
