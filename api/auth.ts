@@ -15,7 +15,7 @@ export async function testEndpoint() {
   }
 };
 
-export async function login(credentials: { email: string, password: string }) {
+export async function login(credentials: { email: string, password: string, type: string }) {
   try {
     const res = await fetch(`${EKCHAN_SERVER}/api/users/login`, {
       method: "POST",
@@ -24,6 +24,7 @@ export async function login(credentials: { email: string, password: string }) {
       },
       body: JSON.stringify(credentials),
     })
+
     return res.json();
   } catch (e: unknown) {
     console.error(e);

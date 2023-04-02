@@ -1,18 +1,28 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useState,
- } from "react";
+} from "react";
 import useProtectedRoutes from "../hooks/useProtectedRoutes";
 
-const AuthContext = createContext({
+interface AuthContextState {
+  currentUser: User;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User>>;
+  authErrorMsg: string;
+  setAuthErrorMsg: React.Dispatch<React.SetStateAction<string>>;
+  isUserLoading: boolean;
+}
+
+const AuthContext = createContext<AuthContextState>({
   currentUser: {
     id: "",
     token: "",
     email: "",
   },
-  setCurrentUser: (prevState: any) => prevState,
+  setCurrentUser: () => {},
+  authErrorMsg: "",
+  setAuthErrorMsg: () => {},
+  isUserLoading: false,
 });
 
 type AuthContextProps = {
@@ -28,12 +38,24 @@ export default function AuthContextProvider({ children }: AuthContextProps) {
     token: "",
     email: "",
   });
+  const [authErrorMsg, setAuthErrorMsg] = useState("");
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
-  useProtectedRoutes(currentUser);
+  useProtectedRoutes({ currentUser, isUserLoading, setAuthErrorMsg, setCurrentUser, setIsUserLoading });
 
-  return <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
-    {children}
-  </AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        isUserLoading,
+        setCurrentUser,
+        authErrorMsg,
+        setAuthErrorMsg,
+      }}
+    >
+      {children}
+  </AuthContext.Provider>
+  );
 }
 
 export function useAuthValue() {

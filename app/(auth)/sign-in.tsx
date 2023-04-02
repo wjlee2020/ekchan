@@ -1,25 +1,31 @@
 import { Link } from "expo-router";
-import { Alert, Image, StyleSheet, TextInput } from "react-native";
+import { useState } from "react";
+import { Image, StyleSheet, TextInput } from "react-native";
+import { login } from "../../api/auth";
 import { Pressable, Text, View } from "../../components/Themed";
 import { useAuthValue } from "../../context/AuthContext";
-import { useState } from "react";
-import { login } from "../../api/auth";
+import Loading from "../../screens/Loading";
 
 export default function SignIn() {
-  const { currentUser, setCurrentUser } = useAuthValue();
+  const { currentUser, isUserLoading, setCurrentUser, setAuthErrorMsg } = useAuthValue();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     if (!email || !password) return;
 
-    const userData = await login({ email, password });
+    const userData = await login({ email, password, type: "access" });
+
+    if (userData.status !== 200) return setAuthErrorMsg("Failed to login. Please try again");
+
     setCurrentUser(() => ({
       id: userData.user.uid,
       email: userData.user.email,
       token: userData.token,
-    }))
+    }));
   }
+
+  if (!currentUser.token && isUserLoading ) return <Loading />
 
   return (
     <View style={{
