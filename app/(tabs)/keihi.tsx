@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
-import Keihi from '../../screens/Keihi';
+import { KeihiList } from '../../components/KeihiList';
 
 export default function KeihiScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.separator} />
-      <Keihi />
+
+      <KeihiList />
     </View>
   );
 }

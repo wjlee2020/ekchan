@@ -19,8 +19,9 @@ export default function SignIn() {
     if (userData.status !== 200) return setAuthErrorMsg("Failed to login. Please try again");
 
     setCurrentUser(() => ({
-      id: userData.user.uid,
+      id: userData.user.id,
       email: userData.user.email,
+      partner_id: userData.user.partner_id,
       token: userData.token,
     }));
   }

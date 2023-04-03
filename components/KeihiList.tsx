@@ -4,32 +4,14 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   ListRenderItem,
 } from 'react-native';
+import { Text } from './Themed';
 import { Item, ItemProps } from '../types/Keihi';
+import { useEkchanSelector } from '../redux/hooks';
 
-const DATA: Item[] = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Rent',
-    cost: "67,000",
-    paid: true,
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Car lease',
-    cost: "130,000",
-    paid: false,
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Groceries',
-    cost: "6,000",
-    paid: true,
-  },
-];
+const DATA: Item[] | [] = [];
 
 const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
@@ -49,7 +31,15 @@ const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => 
   </TouchableOpacity>
 );
 
+// Todo: make this fun
+const EmptyList = () => {
+  return (
+    <Text style={{ fontSize: 28 }}>Any recent purchases?</Text>
+  );
+}
+
 export const KeihiList = () => {
+  const { budgets } = useEkchanSelector((state) => state.budget);
   const [selectedId, setSelectedId] = useState<string | undefined>("");
 
   const renderItem: ListRenderItem<Item> = ({ item }) => {
@@ -69,10 +59,11 @@ export const KeihiList = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={budgets}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selectedId}
+        ListEmptyComponent={<EmptyList />}
       />
     </SafeAreaView>
   );

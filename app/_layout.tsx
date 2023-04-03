@@ -4,6 +4,8 @@ import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { Provider } from "react-redux";
+import { store } from '../redux/store';
 
 import AuthContextProvider from '../context/AuthContext';
 import { StatusBar } from 'expo-status-bar';
@@ -23,19 +25,21 @@ function RootLayoutNav() {
 
   return (
     <AuthContextProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <StatusBar
-          animated={true}
-          hidden
-        />
+      <Provider store={store}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <StatusBar
+            animated={true}
+            hidden
+          />
 
-        <Stack screenOptions={{
-          headerShown: false
-        }}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="tsuika" options={{ presentation: 'modal', title: "Add Keihi" }} />
-        </Stack>
-      </ThemeProvider>
+          <Stack screenOptions={{
+            headerShown: false
+          }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="tsuika" options={{ presentation: 'modal', title: "Add Keihi" }} />
+          </Stack>
+        </ThemeProvider>
+      </Provider>
     </AuthContextProvider>
   );
 }

@@ -18,6 +18,7 @@ const AuthContext = createContext<AuthContextState>({
     id: "",
     token: "",
     email: "",
+    partner_id: "",
   },
   setCurrentUser: () => {},
   authErrorMsg: "",
@@ -37,6 +38,7 @@ export default function AuthContextProvider({ children }: AuthContextProps) {
     id: "",
     token: "",
     email: "",
+    partner_id: "",
   });
   const [authErrorMsg, setAuthErrorMsg] = useState("");
   const [isUserLoading, setIsUserLoading] = useState(false);

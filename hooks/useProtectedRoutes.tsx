@@ -37,7 +37,7 @@ export default function useProtectedRoutes({ currentUser, isUserLoading, setAuth
   }
 
   useEffect(() => {
-    readToken();
+    AsyncStorage.removeItem("@user");
   }, []);
 
   useEffect(() => {
