@@ -21,6 +21,7 @@ export default function SignIn() {
     setCurrentUser(() => ({
       id: userData.user.id,
       email: userData.user.email,
+      name: userData.user.name,
       partner_id: userData.user.partner_id,
       token: userData.token,
     }));

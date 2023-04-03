@@ -18,32 +18,34 @@ type BudgetResponse = {
   status: string;
 }
 
-type listUserAndPartnerBudgets = {
-  id: string;
-  partnerId: string;
-  currentUsername: string;
-  partnerName: string;
+type PartneredBudgetResponse = {
+  budgets: {
+    currentUser: Item[];
+    partner: Item[];
+  };
+  status: number | string;
 }
+
+const headers = new Headers();
+headers.append("Content-Type", "application/json");
+// Todo: add token
 
 export async function createBudget({ uid, item }: createBudgetType): Promise<CreateBudgetResponse> {
   const res = await fetch(`${EKCHAN_SERVER}/api/budget`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      // Todo: add token;
-    },
+    headers,
     body: JSON.stringify({ uid, ...item}),
   });
 
   return res.json();
 }
 
-export async function listUserBudget(uid: string): Promise<BudgetResponse> {
-  const res = await fetch(`${EKCHAN_SERVER}/api/budget/${uid}`);
+export async function listUserBudget(id: string): Promise<BudgetResponse> {
+  const res = await fetch(`${EKCHAN_SERVER}/api/budget/${id}`, { headers });
   return res.json();
 };
 
-export async function listUserAndPartnerBudgets({ currentUsername, id, partnerName, partnerId }: listUserAndPartnerBudgets) {
-  const res = await fetch(`${EKCHAN_SERVER}/api/budget?${currentUsername}=${id}&${partnerName}=${partnerId}`);
+export async function listUserAndPartnerBudgets({ id, partnerId }: { id: string, partnerId: string }): Promise<PartneredBudgetResponse> {
+  const res = await fetch(`${EKCHAN_SERVER}/api/budget?currentUser=${id}&parnter=${partnerId}`, { headers });
   return res.json();
 }

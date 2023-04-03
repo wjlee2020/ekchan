@@ -54,6 +54,7 @@ export default function useProtectedRoutes({ currentUser, isUserLoading, setAuth
     } else if (currentUser.token && inAuthGroup) {
       // Redirect away from the sign-in page.
       router.replace("/");
+      console.log({ currentUser });
       storeUser(currentUser);
     }
   }, [currentUser, isUserLoading]);
