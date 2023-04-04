@@ -10,5 +10,16 @@ type ShowBudgets = {
 
 export default function useShowBudgets({ hasPartner, user }: ShowBudgets) {
   const dispatch = useEkchanDispatch();
-  const fetcher = hasPartner ? listUserAndPartnerBudgets : listUserBudget;
+
+  useEffect(() => {
+    if (!hasPartner) {
+      listUserBudget(user.id)
+        .then((data) => dispatch(setBudgets(data.budgets)))
+        .catch((e) => console.log(e));
+    } else {
+      listUserAndPartnerBudgets({ id: user.id, partnerId: user.partnerId })
+        .then((data) => console.log({ partnerAndUser: data }))
+        .catch((e) => console.log({ second: e }));
+    }
+  }, []);
 };

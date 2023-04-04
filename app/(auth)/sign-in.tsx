@@ -22,7 +22,7 @@ export default function SignIn() {
       id: userData.user.id,
       email: userData.user.email,
       name: userData.user.name,
-      partner_id: userData.user.partner_id,
+      partnerId: userData.user.partner_id,
       token: userData.token,
     }));
   }

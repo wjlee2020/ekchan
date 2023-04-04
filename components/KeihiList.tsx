@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   ListRenderItem,
 } from 'react-native';
+import { useAuthValue } from '../context/AuthContext';
+import useShowBudgets from '../hooks/useShowBudgets';
+import { useEkchanSelector } from '../redux/hooks';
 import { Text } from './Themed';
 import { Item, ItemProps } from '../types/Keihi';
-import { useEkchanSelector } from '../redux/hooks';
-
-const DATA: Item[] | [] = [];
 
 const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
@@ -40,6 +40,10 @@ const EmptyList = () => {
 
 export const KeihiList = () => {
   const { budgets } = useEkchanSelector((state) => state.budget);
+  const { currentUser } = useAuthValue();
+  useShowBudgets({ hasPartner: currentUser.partnerId ? true : false, user: currentUser });
+  console.log(budgets)
+
   const [selectedId, setSelectedId] = useState<string | undefined>("");
 
   const renderItem: ListRenderItem<Item> = ({ item }) => {

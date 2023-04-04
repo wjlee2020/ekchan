@@ -23,7 +23,7 @@ type PartneredBudgetResponse = {
     currentUser: Item[];
     partner: Item[];
   };
-  status: number | string;
+  status: number;
 }
 
 const headers = new Headers();

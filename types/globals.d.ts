@@ -6,7 +6,7 @@ declare global {
     readonly token: string;
     readonly name: string;
     readonly email: string;
-    readonly partner_id: string;
+    readonly partnerId: string;
   };
 
   type Item = {
