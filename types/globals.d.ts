@@ -11,7 +11,7 @@ declare global {
 
   type Item = {
     readonly id: string;
-    readonly created_at?: string | Date;
+    readonly created_at?: string;
     title: string;
     description: string;
     cost: string,

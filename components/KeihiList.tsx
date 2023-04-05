@@ -11,26 +11,34 @@ import {
 import { useAuthValue } from '../context/AuthContext';
 import useShowBudgets from '../hooks/useShowBudgets';
 import { useEkchanSelector } from '../redux/hooks';
-import { Text } from './Themed';
-import { Item, ItemProps } from '../types/Keihi';
+import { Text, View } from './Themed';
+import { ItemProps } from '../types/Keihi';
 
-const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
-    <>
-      <Text style={[styles.title, { color: textColor }]}>
-        {item.title}
-      </Text>
+const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => {
+  const createdAt = item.created_at?.slice(0, 10).replace(/-/g, '/') ?? "";
 
-      <Text style={[styles.title, { color: textColor }]}>
-        {item.cost}
-      </Text>
-    </>
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
+      <>
+        <Text style={[styles.title, { color: textColor }]}>
+          {item.title}
+        </Text>
 
-    <Text style={{ color: textColor, marginLeft: 'auto' }}>
-      {item.paid ? "Paid" : "Unpaid"}
-    </Text>
-  </TouchableOpacity>
-);
+        <Text style={[styles.title, { color: textColor, marginTop: "auto" }]}>
+          {item.cost}
+        </Text>
+      </>
+
+      <View style={styles.textBox}>
+        <Text>{createdAt}</Text>
+
+        <Text style={{ color: textColor, marginLeft: 'auto' }}>
+          {item.paid ? "Paid" : "Unpaid"}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  )
+};
 
 // Todo: make this fun
 const EmptyList = () => {
@@ -92,9 +100,17 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 8,
-    width: 200
+    width: 200,
+    height: 100,
   },
   title: {
     fontSize: 20,
   },
+  textBox: {
+    backgroundColor: "transparent",
+    marginTop: "auto",
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "center"}
 });

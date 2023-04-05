@@ -1,6 +1,7 @@
 import { useRouter, useSearchParams } from "expo-router";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
+import { Snackbar } from "react-native-paper";
 import { createBudget, deleteBudget, editBudget } from "../api/keihi";
 import { initialKeihiState } from "../constants/Colors";
 import { useAuthValue } from "../context/AuthContext";
@@ -15,9 +16,10 @@ import { useEkchanSelector } from "../redux/hooks";
 
 export default function AddOrEditKeihi() {
   const { currentUser } = useAuthValue();
-  const { budgets } = useEkchanSelector((state) => state.budgets)
+  const { budgets } = useEkchanSelector((state) => state.budgets);
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const [newKeihi, setNewKeihi] = useState<Item>(() => {
     if (!searchParams.id) return initialKeihiState;
     const budget = { ...budgets.filter(({ id }) => id.toString() === searchParams.id)[0] };
@@ -29,8 +31,10 @@ export default function AddOrEditKeihi() {
       paid: budget.paid
     }
   });
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   const mainBtnText = !searchParams.id ? "Add" : "Edit";
+  const snackbarText = !searchParams.id ? "Budget Added!" : "Budget Edited!";
 
   const handleAddOrEdit = async () => {
     if (!currentUser.id) return;
@@ -45,14 +49,14 @@ export default function AddOrEditKeihi() {
       }
 
       if (fetchResult.status !== 200) throw new Error("Failed to create budget");
+      setIsSnackbarOpen(true);
     } catch (e) {
       console.error(e);
     } finally {
-      if (!searchParams.id) {
-        setNewKeihi(initialKeihiState);
-      } else {
-        router.push("/keihi");
-      }
+      // Consider
+      // if (!searchParams.id) {
+      //   setNewKeihi(initialKeihiState);
+      // }
     }
   };
 
@@ -60,16 +64,16 @@ export default function AddOrEditKeihi() {
     try {
       const item = await deleteBudget({ uid: currentUser.id, bid: searchParams.id });
       if (item.status !== 201) throw new Error("Failed to delete budget");
+      setIsSnackbarOpen(true);
     } catch (e) {
       console.log(e);
-    } finally {
-      router.push("/keihi");
     }
   }
 
   return (
     <View style={{ width: "80%" }}>
       <TextInput
+        editable={!isSnackbarOpen}
         style={styles.costBox}
         placeholder="Rent"
         placeholderTextColor="gray"
@@ -79,6 +83,7 @@ export default function AddOrEditKeihi() {
       />
 
       <TextInput
+        editable={!isSnackbarOpen}
         style={styles.costBox}
         placeholder="Paid for dinner"
         placeholderTextColor="gray"
@@ -88,6 +93,7 @@ export default function AddOrEditKeihi() {
       />
 
       <TextInput
+        editable={!isSnackbarOpen}
         style={styles.costBox}
         placeholder="50,000"
         placeholderTextColor="gray"
@@ -99,7 +105,9 @@ export default function AddOrEditKeihi() {
       {/* Paid switch button */}
       <View style={{ margin: 12, gap: 12 }}>
         <Text style={{ fontSize: 20 }}>Paid</Text>
+
         <Switch
+          disabled={isSnackbarOpen}
           trackColor={{false: "#767577", true: "#81b0ff"}}
           ios_backgroundColor="#3e3e3e"
           onValueChange={() => setNewKeihi((prev) => ({ ...prev, paid: !prev.paid }))}
@@ -107,7 +115,11 @@ export default function AddOrEditKeihi() {
         />
       </View>
 
-      <Pressable style={styles.button} onPress={handleAddOrEdit}>
+      <Pressable
+        disabled={isSnackbarOpen}
+        style={styles.button}
+        onPress={handleAddOrEdit}
+      >
         <Text style={styles.text}>
           { mainBtnText }
         </Text>
@@ -122,6 +134,20 @@ export default function AddOrEditKeihi() {
           </Pressable>
         )
       }
+
+      <Snackbar
+        visible={isSnackbarOpen}
+        onDismiss={() => setIsSnackbarOpen(false)}
+        action={{
+          label: "Close",
+          onPress: () => {
+            setIsSnackbarOpen(false);
+            router.push("/keihi");
+          },
+        }}
+      >
+        {snackbarText}
+      </Snackbar>
     </View>
   );
 }
