@@ -19,20 +19,22 @@ const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => 
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
-      <>
-        <Text style={[styles.title, { color: textColor }]}>
-          {item.title}
-        </Text>
+      <Text numberOfLines={1} style={[styles.title, { color: textColor }]}>
+        {item.title}
+      </Text>
 
-        <Text style={[styles.title, { color: textColor, marginTop: "auto" }]}>
-          {item.cost}
-        </Text>
-      </>
+      <Text numberOfLines={1} style={[styles.title, { color: textColor, marginTop: "auto" }]}>
+        {item.description}
+      </Text>
+
+      <Text style={[styles.title, { color: textColor, marginTop: "auto" }]}>
+        {item.cost}
+      </Text>
 
       <View style={styles.textBox}>
         <Text>{createdAt}</Text>
 
-        <Text style={{ color: textColor, marginLeft: 'auto' }}>
+        <Text style={{ color: item.paid ? "#fff" : "#FF5C5C", fontWeight: "bold", marginLeft: 'auto' }}>
           {item.paid ? "Paid" : "Unpaid"}
         </Text>
       </View>
@@ -100,8 +102,8 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 8,
-    width: 200,
-    height: 100,
+    width: 300,
+    height: 140,
   },
   title: {
     fontSize: 20,
