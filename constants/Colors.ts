@@ -17,3 +17,11 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const initialKeihiState = {
+  id: "",
+  title: "",
+  description: "",
+  cost: "",
+  paid: false,
+};

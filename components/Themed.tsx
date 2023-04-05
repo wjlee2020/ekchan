@@ -11,6 +11,7 @@ import {
   Button as DefaultButton,
   PressableProps,
   Pressable as DefaultPressable,
+  Switch as DefaultSwitch,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -39,6 +40,7 @@ export type ButtonProps = ThemeProps & DefaultButton['props'];
 export type TextProps = ThemeProps & DefaultText['props'];
 export type TextInputProps = ThemeProps & DefaultTextInput['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type SwitchProps = ThemeProps & DefaultSwitch['props'];
 
 export function Button(props: ButtonProps) {
   const { lightColor, darkColor, title, onPress, ...otherProps } = props;
@@ -67,6 +69,12 @@ export function TextInput(props: TextInputProps) {
 
       <DefaultTextInput style={[{ color }, style]} {...otherProps} />
     </View>
+  );
+}
+
+export function Switch(props: SwitchProps) {
+  return (
+    <DefaultSwitch {...props} />
   );
 }
 

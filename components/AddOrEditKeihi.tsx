@@ -1,28 +1,46 @@
-import { useState } from "react";
+import { useSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { createBudget } from "../api/keihi";
-import { Pressable, Text, TextInput, View } from "./Themed";
+import { initialKeihiState } from "../constants/Colors";
 import { useAuthValue } from "../context/AuthContext";
+import {
+  Pressable,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from "./Themed";
+import { useEkchanSelector } from "../redux/hooks";
 
-export default function AddKehi() {
+export default function AddOrEditKeihi() {
   const { currentUser } = useAuthValue();
-  const [newKeihi, setNewKeihi] = useState<Item>({
-    id: "",
-    title: "",
-    description: "",
-    cost: "",
-    paid: false,
+  const { budgets } = useEkchanSelector((state) => state.budgets)
+  const searchParams = useSearchParams();
+  const [newKeihi, setNewKeihi] = useState<Item>(() => {
+    if (!searchParams.id) return initialKeihiState;
+    const budget = { ...budgets.filter(({ id }) => id.toString() === searchParams.id)[0] };
+    return {
+      id: budget.id,
+      title: budget.title,
+      description: budget.description,
+      cost: budget.cost.toString(),
+      paid: budget.paid
+    }
   });
 
-  // Todo: send newKeihi
-
-  const handleAddKeihi = async () => {
+  const handleAddOrEdit = async () => {
     if (!currentUser.id) return;
     if (!newKeihi.title || !newKeihi.description || !newKeihi.cost) return; // Todo: set a message;
     // send newKeihi
-    const item = await createBudget({ uid: currentUser.id, item: newKeihi });
-    // Todo: set Item to keihi context/store
-    console.log({ item });
+    try {
+      const item = await createBudget({ uid: currentUser.id, item: newKeihi });
+      if (item.status !== 200) throw new Error("Failed to create budget");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setNewKeihi(initialKeihiState);
+    }
   };
 
   return (
@@ -33,6 +51,7 @@ export default function AddKehi() {
         placeholderTextColor="gray"
         label="Title"
         onChangeText={(text) => setNewKeihi((prev) => ({ ...prev, title: text}))}
+        value={newKeihi.title}
       />
 
       <TextInput
@@ -41,24 +60,34 @@ export default function AddKehi() {
         placeholderTextColor="gray"
         label="Description"
         onChangeText={(text) => setNewKeihi((prev) => ({ ...prev, description: text}))}
+        value={newKeihi.description}
       />
 
       <TextInput
         style={styles.costBox}
         placeholder="50,000"
         placeholderTextColor="gray"
-        keyboardType="numeric"
         label="Cost"
         onChangeText={(text) => setNewKeihi((prev) => ({ ...prev, cost: text}))}
+        value={newKeihi.cost}
       />
 
-    {/* Paid switch button */}
+      {/* Paid switch button */}
+      <View style={{ margin: 12, gap: 12 }}>
+        <Text style={{ fontSize: 20 }}>Paid</Text>
+        <Switch
+          trackColor={{false: "#767577", true: "#81b0ff"}}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() => setNewKeihi((prev) => ({ ...prev, paid: !prev.paid }))}
+          value={newKeihi.paid}
+        />
+      </View>
 
-    <Pressable style={styles.button} onPress={handleAddKeihi}>
-      <Text style={styles.text}>
-        Add
-      </Text>
-    </Pressable>
+      <Pressable style={styles.button} onPress={handleAddOrEdit}>
+        <Text style={styles.text}>
+          Add
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -80,6 +109,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     padding: 10,
+    color: "white",
+    fontWeight: "bold",
   },
   button: {
     width: "90%",

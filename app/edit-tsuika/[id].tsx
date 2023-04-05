@@ -1,19 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet } from 'react-native';
-import AddOrEditKeihi from '../components/AddOrEditKeihi';
+import AddOrEditKeihi from '../../components/AddOrEditKeihi';
 
-import { Text, View } from '../components/Themed';
+import { Text, View } from '../../components/Themed';
 
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>経費追加</Text>
+      <Text style={styles.title}>経費編集</Text>
 
       <Text
         style={styles.getStartedText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">
-        いくら使いましたか？
+        何か間違えましたか？
       </Text>
 
       <View style={styles.separator} darkColor="#1C1C1C" />

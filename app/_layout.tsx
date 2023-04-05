@@ -36,6 +36,7 @@ function RootLayoutNav() {
           }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="tsuika" options={{ presentation: "modal", title: "Add Keihi" }} />
+            <Stack.Screen name="edit-tsuika/[id]" options={{ presentation: "modal", title: "Edit Keihi" }} />
           </Stack>
         </ThemeProvider>
       </ReduxProvider>

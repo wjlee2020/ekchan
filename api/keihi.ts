@@ -6,16 +6,16 @@ type createBudgetType = {
 }
 
 type CreateBudgetResponse = {
-  budgets: {
+  budget: {
     insert_keihi: Item;
   },
   list_budgets: Item[];
-  status: string;
+  status: number;
 }
 
 type BudgetResponse = {
   budgets: Item[];
-  status: string;
+  status: number;
 }
 
 type PartneredBudgetResponse = {

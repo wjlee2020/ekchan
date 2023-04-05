@@ -1,3 +1,4 @@
+import { useNavigation, usePathname, useRouter } from "expo-router";
 import { useState } from 'react';
 import {
   FlatList,
@@ -39,10 +40,11 @@ const EmptyList = () => {
 }
 
 export const KeihiList = () => {
-  const { budgets } = useEkchanSelector((state) => state.budget);
+  const { budgets } = useEkchanSelector((state) => state.budgets);
   const { currentUser } = useAuthValue();
-  useShowBudgets({ hasPartner: currentUser.partnerId ? true : false, user: currentUser });
-  console.log(budgets)
+  const pathname = usePathname();
+  const router = useRouter();
+  useShowBudgets({ hasPartner: currentUser.partnerId ? true : false, user: currentUser, deps: pathname });
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");
 
@@ -50,10 +52,14 @@ export const KeihiList = () => {
     const backgroundColor = item.id === selectedId ? '#343541' : '#272A36';
     const color = !item.paid ? '#fff' : '#828286';
 
+    const goToEdit = () => {
+      router.push(`/edit-tsuika/${item.id}`);
+    }
+
     return (
       <KeihiItem
         item={item}
-        onPress={() => setSelectedId(selectedId === item.id ? undefined : item.id)}
+        onPress={goToEdit}
         backgroundColor={backgroundColor}
         textColor={color}
       />
@@ -63,6 +69,8 @@ export const KeihiList = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        style={{ width: 350 }}
+        contentContainerStyle={{ alignItems: "center" }}
         data={budgets}
         renderItem={renderItem}
         keyExtractor={item => item.id}
