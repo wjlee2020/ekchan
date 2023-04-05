@@ -1,4 +1,4 @@
-import { useNavigation, usePathname, useRouter } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 import { useState } from 'react';
 import {
   FlatList,
@@ -44,6 +44,7 @@ export const KeihiList = () => {
   const { currentUser } = useAuthValue();
   const pathname = usePathname();
   const router = useRouter();
+
   useShowBudgets({ hasPartner: currentUser.partnerId ? true : false, user: currentUser, deps: pathname });
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");

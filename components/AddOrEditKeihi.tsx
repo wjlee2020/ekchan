@@ -1,7 +1,7 @@
-import { useSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "expo-router";
+import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { createBudget } from "../api/keihi";
+import { createBudget, deleteBudget, editBudget } from "../api/keihi";
 import { initialKeihiState } from "../constants/Colors";
 import { useAuthValue } from "../context/AuthContext";
 import {
@@ -16,6 +16,7 @@ import { useEkchanSelector } from "../redux/hooks";
 export default function AddOrEditKeihi() {
   const { currentUser } = useAuthValue();
   const { budgets } = useEkchanSelector((state) => state.budgets)
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [newKeihi, setNewKeihi] = useState<Item>(() => {
     if (!searchParams.id) return initialKeihiState;
@@ -29,19 +30,42 @@ export default function AddOrEditKeihi() {
     }
   });
 
+  const mainBtnText = !searchParams.id ? "Add" : "Edit";
+
   const handleAddOrEdit = async () => {
     if (!currentUser.id) return;
     if (!newKeihi.title || !newKeihi.description || !newKeihi.cost) return; // Todo: set a message;
-    // send newKeihi
+
+    let fetchResult;
     try {
-      const item = await createBudget({ uid: currentUser.id, item: newKeihi });
-      if (item.status !== 200) throw new Error("Failed to create budget");
+      if (!searchParams.id) {
+        fetchResult = await createBudget({ uid: currentUser.id, item: newKeihi });
+      } else {
+        fetchResult = await editBudget({ uid: currentUser.id, item: newKeihi });
+      }
+
+      if (fetchResult.status !== 200) throw new Error("Failed to create budget");
     } catch (e) {
       console.error(e);
     } finally {
-      setNewKeihi(initialKeihiState);
+      if (!searchParams.id) {
+        setNewKeihi(initialKeihiState);
+      } else {
+        router.push("/keihi");
+      }
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      const item = await deleteBudget({ uid: currentUser.id, bid: searchParams.id });
+      if (item.status !== 200) throw new Error("Failed to delete budget");
+    } catch (e) {
+      console.log(e);
+    } finally {
+      router.push("/keihi");
+    }
+  }
 
   return (
     <View style={{ width: "80%" }}>
@@ -85,9 +109,19 @@ export default function AddOrEditKeihi() {
 
       <Pressable style={styles.button} onPress={handleAddOrEdit}>
         <Text style={styles.text}>
-          Add
+          { mainBtnText }
         </Text>
       </Pressable>
+
+      {
+        !searchParams.id ? null : (
+          <Pressable style={{ ...styles.button, marginTop: 10, backgroundColor: "#fff" }} onPress={handleDelete}>
+            <Text style={{ ...styles.text, color: "red" }}>
+              Delete
+            </Text>
+          </Pressable>
+        )
+      }
     </View>
   );
 }

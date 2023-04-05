@@ -9,13 +9,6 @@ export default function ModalScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>経費編集</Text>
 
-      <Text
-        style={styles.getStartedText}
-        lightColor="rgba(0,0,0,0.8)"
-        darkColor="rgba(255,255,255,0.8)">
-        何か間違えましたか？
-      </Text>
-
       <View style={styles.separator} darkColor="#1C1C1C" />
 
       <AddOrEditKeihi />
