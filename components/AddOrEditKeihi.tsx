@@ -59,7 +59,7 @@ export default function AddOrEditKeihi() {
   const handleDelete = async () => {
     try {
       const item = await deleteBudget({ uid: currentUser.id, bid: searchParams.id });
-      if (item.status !== 200) throw new Error("Failed to delete budget");
+      if (item.status !== 201) throw new Error("Failed to delete budget");
     } catch (e) {
       console.log(e);
     } finally {
