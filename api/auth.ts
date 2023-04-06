@@ -39,7 +39,9 @@ export async function signUp(credentials: { name: string, email: string, passwor
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
-    })
+    });
+
+    return res.json();
   } catch (e: unknown) {
     console.error(e);
   }

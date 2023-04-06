@@ -5,12 +5,12 @@ import { useEffect } from "react";
 type useProtectedRoutesProp = {
   currentUser: User;
   isUserLoading: boolean;
-  setAuthErrorMsg: React.Dispatch<React.SetStateAction<string>>;
+  setAuthError: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentUser: React.Dispatch<React.SetStateAction<User>>;
   setIsUserLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function useProtectedRoutes({ currentUser, isUserLoading, setAuthErrorMsg, setCurrentUser, setIsUserLoading }: useProtectedRoutesProp) {
+export default function useProtectedRoutes({ currentUser, isUserLoading, setAuthError, setCurrentUser, setIsUserLoading }: useProtectedRoutesProp) {
   const segments = useSegments();
   const router = useRouter();
 
@@ -32,7 +32,7 @@ export default function useProtectedRoutes({ currentUser, isUserLoading, setAuth
     try {
       await AsyncStorage.setItem("@user", JSON.stringify(user));
     } catch (e) {
-      setAuthErrorMsg("Failed to save User Token");
+      setAuthError(true);
     }
   }
 

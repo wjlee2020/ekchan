@@ -1,10 +1,11 @@
 import { useRouter, useSearchParams } from "expo-router";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
-import { Snackbar } from "react-native-paper";
+import { Platform, StyleSheet } from "react-native";
 import { createBudget, deleteBudget, editBudget } from "../api/keihi";
 import { initialKeihiState } from "../constants/Colors";
 import { useAuthValue } from "../context/AuthContext";
+import Notice from "./Notice";
+import { useEkchanSelector } from "../redux/hooks";
 import {
   Pressable,
   Switch,
@@ -12,7 +13,6 @@ import {
   TextInput,
   View,
 } from "./Themed";
-import { useEkchanSelector } from "../redux/hooks";
 
 export default function AddOrEditKeihi() {
   const { currentUser } = useAuthValue();
@@ -52,11 +52,6 @@ export default function AddOrEditKeihi() {
       setIsSnackbarOpen(true);
     } catch (e) {
       console.error(e);
-    } finally {
-      // Consider
-      // if (!searchParams.id) {
-      //   setNewKeihi(initialKeihiState);
-      // }
     }
   };
 
@@ -94,7 +89,7 @@ export default function AddOrEditKeihi() {
 
       <TextInput
         editable={!isSnackbarOpen}
-        style={styles.costBox}
+        style={[styles.costBox, { textAlign: "right" }]}
         placeholder="50,000"
         placeholderTextColor="gray"
         label="Cost"
@@ -103,8 +98,8 @@ export default function AddOrEditKeihi() {
       />
 
       {/* Paid switch button */}
-      <View style={{ margin: 12, gap: 12 }}>
-        <Text style={{ fontSize: 20 }}>Paid</Text>
+      <View style={{ margin: 12, gap: 12, display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+        <Text style={{ fontSize: 20, alignSelf: "center" }}>Paid</Text>
 
         <Switch
           disabled={isSnackbarOpen}
@@ -135,19 +130,27 @@ export default function AddOrEditKeihi() {
         )
       }
 
-      <Snackbar
-        visible={isSnackbarOpen}
-        onDismiss={() => setIsSnackbarOpen(false)}
-        action={{
-          label: "Close",
-          onPress: () => {
-            setIsSnackbarOpen(false);
-            router.push("/keihi");
-          },
-        }}
-      >
-        {snackbarText}
-      </Snackbar>
+      {
+        Platform.OS !== "ios" && (
+          <Pressable
+            disabled={isSnackbarOpen}
+            style={[styles.button, { backgroundColor: "#fff", marginTop: 10 }]}
+            onPress={() => router.back()}
+          >
+            <Text style={[styles.text, { color: "#000" }]}>
+              Back
+            </Text>
+          </Pressable>
+        )
+      }
+
+      <Notice
+        snackbarText={snackbarText}
+        isOpen={isSnackbarOpen}
+        onDismiss={setIsSnackbarOpen}
+        navigate={router.push}
+        navigateLocation="/keihi"
+      />
     </View>
   );
 }

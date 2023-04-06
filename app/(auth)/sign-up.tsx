@@ -1,9 +1,38 @@
 import { Link } from "expo-router";
-import { StyleSheet, TextInput } from "react-native";
+import { useState } from "react";
+import { Image, TextInput } from "react-native";
 import { Pressable, Text, View } from "../../components/Themed";
-import { signUp, testEndpoint } from "../../api/auth";
+import { signUp } from "../../api/auth";
+import { styles } from "./sign-in";
+import { useAuthValue } from "../../context/AuthContext";
+import Notice from "../../components/Notice";
+
+type NewUser = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export default function SignUp() {
+  const { authError, setAuthError } = useAuthValue();
+  const [accountInfo, setAccountInfo] = useState<NewUser>({
+    email: "",
+    name: "",
+    password: "",
+  });
+
+  const handleAccountRegistration = async () => {
+    if (!accountInfo.email || !accountInfo.name || !accountInfo.password) return;
+    if (!accountInfo.email.includes("@")) return setAuthError(true);
+
+    try {
+      const res = await signUp(accountInfo);
+      if (res.status !== 200) throw new Error("failed to create account");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={{
       height: "100%",
@@ -12,18 +41,25 @@ export default function SignUp() {
       alignItems: 'center',
       }}
     >
-      <Text style={{ fontSize: 36 }}>Ekchan - Sign Up</Text>
+      <Image
+        source={require("../../assets/images/lmpihmy.gif")}
+        style={{width: 250, height: 250}}
+      />
 
       <View style={{ marginVertical: 8 }}>
         <TextInput
           style={styles.input}
           placeholder="Name"
+          value={accountInfo.name}
+          onChangeText={(text) => setAccountInfo((prev) => ({ ...prev, name: text}))}
         />
 
         <TextInput
           style={styles.input}
           autoCapitalize="none"
           placeholder="Email"
+          value={accountInfo.email}
+          onChangeText={(text) => setAccountInfo((prev) => ({ ...prev, email: text}))}
         />
 
         <TextInput
@@ -31,9 +67,11 @@ export default function SignUp() {
           style={styles.input}
           placeholder="Password"
           secureTextEntry
+          value={accountInfo.password}
+          onChangeText={(text) => setAccountInfo((prev) => ({ ...prev, password: text}))}
         />
 
-        <Pressable style={[styles.loginBtn]} onPress={() => testEndpoint()}>
+        <Pressable style={[styles.loginBtn]} onPress={handleAccountRegistration}>
           <Text style={styles.loginBtnText}>Create Account</Text>
         </Pressable>
       </View>
@@ -42,39 +80,12 @@ export default function SignUp() {
         <Text>Already have an account?</Text>
         <Link style={styles.signUpLink} href={"/(auth)/sign-in"}>Sign In</Link>
       </Pressable>
+
+      <Notice
+        isOpen={authError}
+        onDismiss={setAuthError}
+        snackbarText="Failed to create your account. Make sure you provided properly formatted email: `name@mail.com`."
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    width: 300,
-    margin: 12,
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 10,
-  },
-  signUpLink: {
-    fontWeight: "bold",
-    textDecorationLine: "underline",
-  },
-  loginBtn: {
-    width: 300,
-    alignSelf: "center",
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'black',
-  },
-  loginBtnText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-  }
-});

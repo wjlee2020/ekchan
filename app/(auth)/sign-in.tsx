@@ -2,12 +2,13 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, TextInput } from "react-native";
 import { login } from "../../api/auth";
+import Notice from "../../components/Notice";
 import { Pressable, Text, View } from "../../components/Themed";
 import { useAuthValue } from "../../context/AuthContext";
 import Loading from "../../screens/Loading";
 
 export default function SignIn() {
-  const { currentUser, isUserLoading, setCurrentUser, setAuthErrorMsg } = useAuthValue();
+  const { authError, currentUser, isUserLoading, setCurrentUser, setAuthError } = useAuthValue();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,7 +17,7 @@ export default function SignIn() {
 
     const userData = await login({ email, password, type: "access" });
 
-    if (userData.status !== 200) return setAuthErrorMsg("Failed to login. Please try again");
+    if (userData.status !== 200) return setAuthError(true);
 
     setCurrentUser(() => ({
       id: userData.user.id,
@@ -74,11 +75,17 @@ export default function SignIn() {
         <Text style={{ color: "white" }}>Don't have an account?</Text>
         <Link style={styles.signUpLink} href={"/(auth)/sign-up"}>Sign Up</Link>
       </Pressable>
+
+      <Notice
+        isOpen={authError}
+        snackbarText="Failed to login. Please check your email/password. If you cannot login, try resetting your password"
+        onDismiss={setAuthError}
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   input: {
     height: 40,
     width: 300,

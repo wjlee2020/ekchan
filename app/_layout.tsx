@@ -26,16 +26,13 @@ function RootLayoutNav() {
     <AuthContextProvider>
       <ReduxProvider store={store}>
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-          <StatusBar
-            animated={true}
-            hidden
-          />
+          <StatusBar animated={true} hidden />
 
-          <Stack screenOptions={{
-            headerShown: false
-          }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+
             <Stack.Screen name="tsuika" options={{ presentation: "modal", title: "Add Keihi" }} />
+
             <Stack.Screen name="edit-tsuika/[id]" options={{ presentation: "modal", title: "Edit Keihi" }} />
           </Stack>
         </ThemeProvider>
