@@ -6,9 +6,11 @@ import Notice from "../../components/Notice";
 import { Pressable, Text, View } from "../../components/Themed";
 import { useAuthValue } from "../../context/AuthContext";
 import Loading from "../../screens/Loading";
+import { Button } from "react-native-paper";
 
 export default function SignIn() {
   const { authError, currentUser, isUserLoading, setCurrentUser, setAuthError } = useAuthValue();
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -59,16 +61,15 @@ export default function SignIn() {
           onChangeText={(text) => setPassword(text)}
         />
 
-        <Pressable
-          android_ripple={{ color: "green" }}
-          style={({ pressed }) => [
-            styles.loginBtn,
-            pressed ? styles.pressedItem : null
-          ]}
+        <Button
+          loading={isLoading}
+          mode="contained"
+          buttonColor="#000"
+          style={{ width: 300, marginLeft: "auto", marginRight: "auto" }}
           onPress={handleLogin}
         >
-          <Text style={styles.loginBtnText}>Login</Text>
-        </Pressable>
+          Login
+        </Button>
       </View>
 
       <Pressable style={{ marginTop: 10 }}>

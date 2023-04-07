@@ -6,6 +6,7 @@ import { signUp } from "../../api/auth";
 import { styles } from "./sign-in";
 import { useAuthValue } from "../../context/AuthContext";
 import Notice from "../../components/Notice";
+import { Button } from "react-native-paper";
 
 type NewUser = {
   name: string;
@@ -15,6 +16,7 @@ type NewUser = {
 
 export default function SignUp() {
   const { authError, setAuthError } = useAuthValue();
+  const [isLoading, setIsLoading] = useState(false);
   const [accountInfo, setAccountInfo] = useState<NewUser>({
     email: "",
     name: "",
@@ -26,10 +28,13 @@ export default function SignUp() {
     if (!accountInfo.email.includes("@")) return setAuthError(true);
 
     try {
+      setIsLoading(true)
       const res = await signUp(accountInfo);
-      if (res.status !== 200) throw new Error("failed to create account");
+      if (res.status !== 200) return setAuthError(true);
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,13 +76,20 @@ export default function SignUp() {
           onChangeText={(text) => setAccountInfo((prev) => ({ ...prev, password: text}))}
         />
 
-        <Pressable style={[styles.loginBtn]} onPress={handleAccountRegistration}>
-          <Text style={styles.loginBtnText}>Create Account</Text>
-        </Pressable>
+        <Button
+          loading={isLoading}
+          mode="contained"
+          buttonColor="#000"
+          style={{ width: 300, marginLeft: "auto", marginRight: "auto" }}
+          onPress={handleAccountRegistration}
+        >
+          Create Account
+        </Button>
       </View>
 
       <Pressable style={{ marginTop: 10 }}>
         <Text>Already have an account?</Text>
+
         <Link style={styles.signUpLink} href={"/(auth)/sign-in"}>Sign In</Link>
       </Pressable>
 
