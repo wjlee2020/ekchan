@@ -16,5 +16,10 @@ declare global {
     description: string;
     cost: string,
     paid: boolean,
+    keihi_type_id?: number;
+    keihi_type?: {
+      name: string;
+      id: number;
+    }
   };
 }

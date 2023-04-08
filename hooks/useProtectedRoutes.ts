@@ -41,7 +41,6 @@ export default function useProtectedRoutes({ currentUser, isUserLoading, setAuth
   }
 
   useEffect(() => {
-    console.log("ran");
     AsyncStorage.removeItem("@user");
   }, []);
 
