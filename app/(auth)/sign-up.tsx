@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { Image, TextInput } from "react-native";
 import { Pressable, Text, View } from "../../components/Themed";
@@ -16,21 +16,29 @@ type NewUser = {
 
 export default function SignUp() {
   const { authError, setAuthError } = useAuthValue();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [accountInfo, setAccountInfo] = useState<NewUser>({
     email: "",
     name: "",
     password: "",
   });
+  const [snackbarText, setSnackbarText] = useState("Failed to create your account. Make sure you provided properly formatted email: `name@mail.com`.");
 
   const handleAccountRegistration = async () => {
     if (!accountInfo.email || !accountInfo.name || !accountInfo.password) return;
     if (!accountInfo.email.includes("@")) return setAuthError(true);
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const res = await signUp(accountInfo);
-      if (res.status !== 200) return setAuthError(true);
+
+      if (res.status === 400) {
+        setSnackbarText(res.msg?.charAt(0).toUpperCase() + res.msg?.slice(1));
+        return setAuthError(true);
+      }
+
+      router.push("/sign-in");
     } catch (e) {
       console.log(e);
     } finally {
@@ -96,7 +104,7 @@ export default function SignUp() {
       <Notice
         isOpen={authError}
         onDismiss={setAuthError}
-        snackbarText="Failed to create your account. Make sure you provided properly formatted email: `name@mail.com`."
+        snackbarText={snackbarText}
       />
     </View>
   );

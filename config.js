@@ -1,1 +1,1 @@
-export const EKCHAN_SERVER = "https://846b-2400-2652-9163-e100-6110-3879-202c-1ff2.jp.ngrok.io";
+export const EKCHAN_SERVER = "https://cb98-2400-4152-90e0-8300-7d3a-4de4-22c7-2b62.ngrok-free.app";

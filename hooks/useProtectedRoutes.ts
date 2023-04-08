@@ -28,15 +28,20 @@ export default function useProtectedRoutes({ currentUser, isUserLoading, setAuth
   }
 
   const storeUser = async (user: User) => {
+    setIsUserLoading(true);
+
     if (!user.token) return;
     try {
       await AsyncStorage.setItem("@user", JSON.stringify(user));
     } catch (e) {
       setAuthError(true);
+    } finally {
+      setIsUserLoading(false);
     }
   }
 
   useEffect(() => {
+    console.log("ran");
     AsyncStorage.removeItem("@user");
   }, []);
 

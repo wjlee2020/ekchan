@@ -10,24 +10,31 @@ import { Button } from "react-native-paper";
 
 export default function SignIn() {
   const { authError, currentUser, isUserLoading, setCurrentUser, setAuthError } = useAuthValue();
-  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [snackbarText, setSnackbarText] = useState("Failed to login. Please check your email/password. If you cannot login, try resetting your password");
 
   const handleLogin = async () => {
     if (!email || !password) return;
 
-    const userData = await login({ email, password, type: "access" });
+    try {
+      const userData = await login({ email, password, type: "access" });
 
-    if (userData.status !== 200) return setAuthError(true);
+      if (userData.status === 404) {
+        setSnackbarText(userData.msg?.charAt(0).toUpperCase() + userData.msg?.slice(1));
+        return setAuthError(true);
+      }
 
-    setCurrentUser(() => ({
-      id: userData.user.id,
-      email: userData.user.email,
-      name: userData.user.name,
-      partnerId: userData.user.partner_id,
-      token: userData.token,
-    }));
+      setCurrentUser(() => ({
+        id: userData.user.id,
+        email: userData.user.email,
+        name: userData.user.name,
+        partnerId: userData.user.partner_id,
+        token: userData.token,
+      }));
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   if (!currentUser.token && isUserLoading ) return <Loading />
@@ -62,7 +69,7 @@ export default function SignIn() {
         />
 
         <Button
-          loading={isLoading}
+          loading={isUserLoading}
           mode="contained"
           buttonColor="#000"
           style={{ width: 300, marginLeft: "auto", marginRight: "auto" }}
@@ -79,7 +86,7 @@ export default function SignIn() {
 
       <Notice
         isOpen={authError}
-        snackbarText="Failed to login. Please check your email/password. If you cannot login, try resetting your password"
+        snackbarText={snackbarText}
         onDismiss={setAuthError}
       />
     </View>
