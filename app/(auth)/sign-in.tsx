@@ -1,12 +1,14 @@
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, TextInput } from "react-native";
+import { Button } from "react-native-paper";
 import { login } from "../../api/auth";
+import { ekchanLog } from "../../api/logger";
 import Notice from "../../components/Notice";
 import { Pressable, Text, View } from "../../components/Themed";
+import createLoggerObject from "../../constants/Logger";
 import { useAuthValue } from "../../context/AuthContext";
 import Loading from "../../screens/Loading";
-import { Button } from "react-native-paper";
 
 export default function SignIn() {
   const { authError, currentUser, isUserLoading, setCurrentUser, setAuthError } = useAuthValue();
@@ -22,7 +24,8 @@ export default function SignIn() {
 
       if (userData.status === 404) {
         setSnackbarText(userData.msg?.charAt(0).toUpperCase() + userData.msg?.slice(1));
-        return setAuthError(true);
+        setAuthError(true);
+        throw new Error();
       }
 
       setCurrentUser(() => ({
@@ -33,11 +36,13 @@ export default function SignIn() {
         token: userData.token,
       }));
     } catch (e) {
-      console.log(e);
+      const logBody = createLoggerObject({ name: `Login attempt by: ${email}.`, type: "LOGIN" });
+      ekchanLog(logBody);
+      setAuthError(true);
     }
-  }
+  };
 
-  if (!currentUser.token && isUserLoading ) return <Loading />
+  if (!currentUser.token && isUserLoading ) return <Loading />;
 
   return (
     <View style={{

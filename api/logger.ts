@@ -1,24 +1,24 @@
 import { EKCHAN_LOGGER } from "../config";
 
-type LogBody = {
+export type Logger = {
   embeds: [
     {
       title: string;
       description: string;
-      color: 15258703,
+      color?: number | string,
       fields: [
         {
           name: string;
-          value: string;
-          inline: false
+          value?: string | unknown;
+          inline: boolean;
         }
       ],
     }
   ]
 };
 
-export async function ekchanLog(body: LogBody) {
-  await fetch(EKCHAN_LOGGER, {
+export async function ekchanLog(body: Logger) {
+  await fetch(`${EKCHAN_LOGGER}/logger`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
