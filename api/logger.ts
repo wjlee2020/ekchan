@@ -5,11 +5,11 @@ export type Logger = {
     {
       title: string;
       description: string;
-      color?: number | string,
+      color: number | string,
       fields: [
         {
           name: string;
-          value?: string | unknown;
+          value: string | unknown;
           inline: boolean;
         }
       ],
