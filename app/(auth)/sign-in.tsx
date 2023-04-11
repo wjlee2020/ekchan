@@ -24,8 +24,7 @@ export default function SignIn() {
 
       if (userData.status === 404) {
         setSnackbarText(userData.msg?.charAt(0).toUpperCase() + userData.msg?.slice(1));
-        setAuthError(true);
-        throw new Error();
+        return setAuthError(true);
       }
 
       setCurrentUser(() => ({
