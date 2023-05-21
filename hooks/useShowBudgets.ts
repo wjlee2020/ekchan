@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { listUserAndPartnerBudgets, listUserBudget } from "../api/keihi"
-import { setBudgets } from "../redux/budgets/budgetSlice";
+import { setBudgets, setPairedBudgets } from "../redux/budgets/budgetSlice";
 import { useEkchanDispatch } from "../redux/hooks";
 
 type ShowBudgets = {
@@ -22,7 +22,9 @@ export default function useShowBudgets({ hasPartner, user, deps }: ShowBudgets) 
         .catch((e) => console.log(e));
     } else {
       listUserAndPartnerBudgets({ id: user.id, partnerId: user.partnerId })
-        .then((data) => console.log({ partnerAndUser: data }))
+        .then((data) => {
+          dispatch(setPairedBudgets(data));
+        })
         .catch((e) => console.log({ second: e }));
     }
   }, [deps]);
