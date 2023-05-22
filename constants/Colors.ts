@@ -20,8 +20,12 @@ export default {
 
 export const initialKeihiState = {
   id: "",
-  title: "",
-  description: "",
   cost: "",
+  description: "",
+  keihi_type: null,
+  keihi_type_id: undefined,
   paid: false,
+  title: "",
+  user: "",
+  user_id: ""
 };

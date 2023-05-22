@@ -2,7 +2,7 @@ import { useRouter, useSearchParams } from "expo-router";
 import { useState } from "react";
 import { Platform, StyleSheet } from "react-native";
 import { createBudget, deleteBudget, editBudget } from "../api/keihi";
-import { initialKeihiState } from "../constants/Colors";
+import { initialKeihiState } from "../constants";
 import { useAuthValue } from "../context/AuthContext";
 import Notice from "./Notice";
 import { useEkchanSelector } from "../redux/hooks";
@@ -22,14 +22,8 @@ export default function AddOrEditKeihi() {
 
   const [newKeihi, setNewKeihi] = useState<Item>(() => {
     if (!searchParams.id) return initialKeihiState;
-    const budget = { ...budgets.filter(({ id }) => id.toString() === searchParams.id)[0] };
-    return {
-      id: budget.id,
-      title: budget.title,
-      description: budget.description,
-      cost: budget.cost.toString(),
-      paid: budget.paid
-    }
+    const budget: Item = { ...budgets.filter(({ id }) => id.toString() === searchParams.id)[0] };
+    return { ...budget }
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 

@@ -4,12 +4,12 @@ import { PartneredBudgetResponse } from "../../types/Response";
 
 type BudgetSlice = {
   budgets: Item[] | [];
-  paired_budgets: PartneredBudgetResponse | null;
-}
+  pairedBudgets: PartneredBudgetResponse | null;
+};
 
 const initialState: BudgetSlice = {
   budgets: [],
-  paired_budgets: null,
+  pairedBudgets: null,
 };
 
 export const budgetSlice = createSlice({
@@ -20,7 +20,7 @@ export const budgetSlice = createSlice({
       state.budgets = action.payload;
     },
     setPairedBudgets(state, action: PayloadAction<PartneredBudgetResponse>) {
-      state.paired_budgets = action.payload;
+      state.pairedBudgets = action.payload;
     }
   },
 });

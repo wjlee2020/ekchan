@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 import { listUserAndPartnerBudgets, listUserBudget } from "../api/keihi"
+import { ekchanLog } from "../api/logger";
+import createLoggerObject from "../constants/Logger";
 import { setBudgets, setPairedBudgets } from "../redux/budgets/budgetSlice";
 import { useEkchanDispatch } from "../redux/hooks";
 
@@ -19,13 +21,19 @@ export default function useShowBudgets({ hasPartner, user, deps }: ShowBudgets) 
         .then((data) => {
           dispatch(setBudgets(data.budgets));
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          const logBody = createLoggerObject({ name: `Failed to get ${user.id} budgets (single).`, type: "SINGLE_USER_BUDGETS" });
+          ekchanLog(logBody);
+        });
     } else {
       listUserAndPartnerBudgets({ id: user.id, partnerId: user.partnerId })
         .then((data) => {
           dispatch(setPairedBudgets(data));
         })
-        .catch((e) => console.log({ second: e }));
+        .catch((e) => {
+          const logBody = createLoggerObject({ name: `Failed to get ${user.id} budgets (paired).`, type: "PAIRED_USER_BUDGETS" });
+          ekchanLog(logBody);
+        })
     }
   }, [deps]);
 };

@@ -1,15 +1,7 @@
-export type PartneredBudgetResponse = {
-  budgets: {
-    currentUser: Item[];
-    partner: Item[];
-  };
-  status: number;
-};
-
 export type BudgetResponse = {
   budgets: Item[];
   status: number;
-}
+};
 
 export type CreateBudgetResponse = {
   budget: {
@@ -17,4 +9,12 @@ export type CreateBudgetResponse = {
   },
   list_budgets: Item[];
   status: number;
-}
+};
+
+export type PartneredBudgetResponse = {
+  budgets: {
+    currentUser: Item[];
+    partner: Item[];
+  };
+  status: number;
+};

@@ -12,14 +12,16 @@ declare global {
   type Item = {
     readonly id: string;
     readonly created_at?: string;
-    title: string;
+    cost: string;
     description: string;
-    cost: string,
-    paid: boolean,
-    keihi_type_id?: number;
-    keihi_type?: {
+    keihi_type: {
       name: string;
       id: number;
-    }
+    } | null;
+    keihi_type_id?: number;
+    paid: boolean;
+    title: string;
+    user: string;
+    user_id: string;
   };
 }
