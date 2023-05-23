@@ -50,7 +50,7 @@ const EmptyList = () => {
 }
 
 export const KeihiList = () => {
-  const { budgets, pairedBudgets } = useEkchanSelector((state) => state.budgets);
+  const { budgets } = useEkchanSelector((state) => state.budgets);
   const { currentUser } = useAuthValue();
   const pathname = usePathname();
   const router = useRouter();
@@ -59,16 +59,13 @@ export const KeihiList = () => {
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");
 
-  const pairedBudgetList = pairedBudgets && [...pairedBudgets.budgets.currentUser, ...pairedBudgets.budgets.partner];
-  console.log(pairedBudgetList);
-
   const renderItem: ListRenderItem<Item> = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#343541' : '#272A36';
     const color = !item.paid ? '#fff' : '#828286';
 
     const goToEdit = () => {
       router.push(`/edit-tsuika/${item.id}`);
-    }
+    };
 
     return (
       <KeihiItem
@@ -85,7 +82,7 @@ export const KeihiList = () => {
       <FlatList
         style={{ width: 350 }}
         contentContainerStyle={{ alignItems: "center" }}
-        data={pairedBudgetList || budgets}
+        data={budgets}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selectedId}

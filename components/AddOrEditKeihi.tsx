@@ -23,7 +23,7 @@ export default function AddOrEditKeihi() {
   const [newKeihi, setNewKeihi] = useState<Item>(() => {
     if (!searchParams.id) return initialKeihiState;
     const budget: Item = { ...budgets.filter(({ id }) => id.toString() === searchParams.id)[0] };
-    return { ...budget }
+    return { ...budget, cost: budget.cost.toString() }
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
