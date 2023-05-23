@@ -9,11 +9,11 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { useAuthValue } from '../context/AuthContext';
+import { sortBudgetsByDate } from "../helpers";
 import useShowBudgets from '../hooks/useShowBudgets';
 import { useEkchanSelector } from '../redux/hooks';
 import { Text, View } from './Themed';
 import { ItemProps } from '../types/Keihi';
-
 const KeihiItem = ({ item, onPress, backgroundColor, textColor }: ItemProps) => {
   const createdAt = item.created_at?.slice(0, 10).replace(/-/g, '/') ?? "";
 
@@ -77,12 +77,14 @@ export const KeihiList = () => {
     );
   };
 
+  const sortedBudgets = sortBudgetsByDate(budgets);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         style={{ width: 350 }}
         contentContainerStyle={{ alignItems: "center" }}
-        data={budgets}
+        data={sortedBudgets}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selectedId}

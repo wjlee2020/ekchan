@@ -42,7 +42,7 @@ export default function AddOrEditKeihi() {
         fetchResult = await editBudget({ uid: currentUser.id, item: newKeihi });
       }
 
-      if (fetchResult.status !== 200) throw new Error("Failed to create budget");
+      if (fetchResult.status === 400) throw new Error("Failed to create budget");
       setIsSnackbarOpen(true);
     } catch (e) {
       console.error(e);
